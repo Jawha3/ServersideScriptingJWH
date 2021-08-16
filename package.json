@@ -1,0 +1,24 @@
+{
+  "name": "nodeserverside",
+  "version": "1.0.0",
+  "description": "nodeserver",
+  "main": "server.js",
+  "dependencies": {
+    "nodemon": "^2.0.12"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jawha3/ServersideScriptingJWH.git"
+  },
+  "author": "jwh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jawha3/ServersideScriptingJWH/issues"
+  },
+  "homepage": "https://github.com/Jawha3/ServersideScriptingJWH#readme"
+}
