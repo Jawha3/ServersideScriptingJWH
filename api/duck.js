@@ -4,8 +4,8 @@ module.exports = {
 
     GET: {
         handler: function(req, res, p) {
-            
-            send(req, res, {says: "Quack", method: req.method, param: p});
+            let params = p !== ""? p.replace("/", "").split("/"): null;
+            send(req, res, {says: "Quack", method: req.method, param: params});
         }
         
         

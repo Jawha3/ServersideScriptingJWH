@@ -4,6 +4,7 @@ const api = {};
 
 api["/api/duck"] = require("./api/duck");
 api["/api/cat"] = require("./api/cat");
+api["/api/animal"] = require("./api/animal");
 
 
 module.exports = function(req, res){
@@ -45,26 +46,57 @@ module.exports = function(req, res){
 
     //// RegEx med parameter
 
-    const apiRxParam = /^(\/api\/\w+)(\/\w+)?/;
-    // /(?<Grp1>^\/api?\w+)\/(?<Grp2>\w+\/?\w+$)/;
-    result = endpoint.match(apiRxParam);
-    console.log(result);
+    // const apiRxParam = /^(\/api\/\w+)(\/\w+)?/;
+    // // /^(\/api\/\w+)((\/\w+)*)$/   ----Tillader flere parameter
+    // result = endpoint.match(apiRxParam);
+    // console.log(result);
     
-    if(result){
-        // Match fundet
-        if (api[result[1]]) {
-            if (api[result[1]][req.method]) {
-                //Metode matcher req.method
-                api[result[1]][req.method].handler(req, res, result[2]);
-                return;
-            }
-            helpers.send(req, res, {msg: "Metode ikke tilladt her."}, 405);
+    // if(result){
+    //     // Match fundet
+    //     if (api[result[1]]) {
+    //         if (api[result[1]][req.method]) {
+    //             //Metode matcher req.method
+    //             api[result[1]][req.method].handler(req, res, result[2]);
+    //             return;
+    //         }
+    //         helpers.send(req, res, {msg: "Metode ikke tilladt her."}, 405);
+    //         return;
+    //     }
+
+    //     console.log(result);
+    // }
+
+// Regex med parameter og groups
+
+const apiRxParam = /^(?<route>\/api\/\w+)(?<id>(\/\w+)*)$/
+// /^(\/api\/\w+)((\/\w+)*)$/   ----Tillader flere parameter
+result = endpoint.match(apiRxParam);
+console.log(result);
+
+if(result){
+    // Match fundet
+    if (api[result.groups.route] && [result.groups.id] == null) {
+        if (api[result.groups.route][req.method]) {
+            //Metode matcher req.method
+            api[result.groups.route][req.method].handler(req, res, result.groups.id);
             return;
         }
-
-        console.log(result);
+        helpers.send(req, res, {msg: "Metode ikke tilladt her."}, 405);
+        return;
     }
 
+    if (api[result.groups.route] && [result.groups.id] != null) {
+        if (api[result.groups.route][req.method]) {
+            //Metode matcher req.method
+            api[result.groups.route][req.method].handler(req, res, result.groups.id);
+            return;
+        }
+        helpers.send(req, res, {msg: "Metode ikke tilladt her."}, 405);
+        return;
+    }
+
+    console.log(result);
+}
 
     // if (endpoint === "/index.html") {
     //     helpers.sendFile(req, res, "./static/index.html");
